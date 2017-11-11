@@ -1,0 +1,46 @@
+Hi Heidy,
+
+For the 1st assignment, I would like to give you task for Users feature using Flask Framework.
+
+DB: Mysql
+Tables: can create your own table, we will justify from there.
+Endpoint: Can create your endpoint
+
+1. User API
+Specification
+[POST]
+- first_name
+- last_name
+- username
+- email
+- password
+
+Upon success, system will send email using Mailgun library (can register for free)
+
+Response in JSON
+{
+    'status': 'OK',
+    'username': {registered_username}
+}
+
+
+2. JWT (JSON Web Token) Feature
+Create 1 API Endpoint to give access token to the requested user.
+Endpoint: /auth/
+[POST]
+- username
+- password
+
+Response: JWT Token format
+
+3. User profile
+endpoint: /users/profile
+Use the JWT access token to access this endpoint
+Throws Forbidden 403 response if the access token invalid.
+If success, will response user profile
+{
+  'first_name': 'Heidy',
+  'last_name': 'Madia'
+}
+
+Push your code to github / bitbucket and share to me. 
