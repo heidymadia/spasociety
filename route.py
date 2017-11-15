@@ -37,6 +37,14 @@ class CreateUser(Resource):
             data = cursor.fetchall()
 
             if len(data) is 0:
+                requests.post(
+                    "https://api.mailgun.net/v3/YOUR_DOMAIN_NAME/messages",
+                    auth=("api", "YOUR_API_KEY"),
+                    data={"from": "genduts_club@yahoo.com",
+                          "to": ["genduts_club@yahoo.com"],
+                          "subject": "Hello API",
+                          "text": "Testing some Mailgun awesomness!"})
+
                 return {
                     'status' : 'OK',
                     'username' : _username
@@ -67,20 +75,7 @@ ProfileUser Class
 class ProfileUser(Resource):
     def get(self):
         try:
-            parser = reqparse.RequestParser()
-            parser.add_argument('firstname', type=str, help='First Name to create user')
-            parser.add_argument('lastname', type=str, help='Last Name to create user')
-            parser.add_argument('username', type=str, help='Username to create user')
-            parser.add_argument('email', type=str, help='Email address to create user')
-            parser.add_argument('password', type=str, help='Password to create user')
-            args = parser.parse_args()
-
-            _firstname  = args['firstname']
-            _lastname   = args['lastname']
-            _username   = args['username']
-            _email      = args['email']
-            _password   = args['password']
-            _hashed_password = generate_password_hash(_password)
+            return {}
 
         except Exception as e:
             raise
@@ -102,7 +97,7 @@ class ProfileUser(Resource):
             _password   = args['password']
             _hashed_password = generate_password_hash(_password)
 
-            return
+            return 
 
         except Exception as e:
             raise
