@@ -9,6 +9,6 @@ from app import app, api, mysql, conn, cursor
 """
 Landing Page
 """
-@app.route('/')
-def hello():
-    return 'Hello, World!';
+#@app.route('/')
+#ef hello():
+#   return 'Hello, World!';

@@ -6,5 +6,6 @@ CREATE TABLE `spasociety_store`.`user` (
   `username` VARCHAR(47) NOT NULL,
   `email` TEXT NOT NULL,
   `password` VARCHAR(47) NOT NULL,
+  `keymaterial` VARCHAR(47) NOT NULL,
   PRIMARY KEY (`userid`)
 );

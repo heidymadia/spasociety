@@ -47,12 +47,12 @@ class CreateUser(Resource):
 
                 return {
                     'status' : 'OK',
-                    'username' : _username
+                    'username' : _username,
                     'message' : 'Username created'
                     }
             else:
                 return {
-                    'status': 'ERR'
+                    'status': 'ERR',
                     'message': 'Something gone wrong'
                 }
 
@@ -66,8 +66,35 @@ AuthUser Class
 """
 class AuthUser(Resource):
     def post(self):
-        jwt decode
-        return {'status':'success'}
+        try:
+            """
+            Synchronous Key Auth
+            """
+            # Parse the arguments
+            parser = reqparse.RequestParser()
+            parser.add_argument('username', type=str, help='username for authentication')
+            parser.add_argument('password', type=str, help='Password for authentication')
+            parser.add_argument('encoded', type=str, help='encoded payload')
+            args = parser.parse_args()
+
+            _username = args['username']
+            _password = args['password']
+            __encoded = args['encoded']
+            _hashed_password = generate_password_hash(_password)
+
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            data = cursor.callproc('sp_AuthenticateUser', (_username, _hashed_password))
+            secret = data[0]
+
+            result = jwt.decode(_encoded,  secret, algorithm='HS512')
+
+            if(_username == result.username):
+                return {'status' : 200, 'message' : 'authenticated'}
+            else:
+                return {'status' : 100, 'message' : 'rejected'}
+        except Exception as e:
+            return {'error': str(e)}
 
 """
 ProfileUser Class
@@ -78,7 +105,7 @@ class ProfileUser(Resource):
             return {}
 
         except Exception as e:
-            raise
+            return {'error': str(e)}
 
     def post(self):
         try:
@@ -97,10 +124,30 @@ class ProfileUser(Resource):
             _password   = args['password']
             _hashed_password = generate_password_hash(_password)
 
-            return 
+            return
 
         except Exception as e:
-            raise
+            return {'error': str(e)}
+
+"""
+List Users
+"""
+class ListUser(Resource):
+    def get(self):
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor()
+
+            cursor.execute("SELECT Host, User FROM mysql.user")
+            data = cursor.fetchall()
+
+            if(len(data)>0):
+                return {'status':200, 'data':data}
+            else:
+                return {'status':100, 'message':'Authentication failure'}
+
+        except Exception as e:
+            return {'error': str(e)}
 
 """
 Endpoint
@@ -108,3 +155,4 @@ Endpoint
 api.add_resource(CreateUser, '/users/create')
 api.add_resource(AuthUser, '/auth')
 api.add_resource(ProfileUser, '/users/profile')
+api.add_resource(ListUser, '/users/list')

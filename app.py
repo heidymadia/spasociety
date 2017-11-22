@@ -24,8 +24,8 @@ MySQL
 """
 mysql = MySQL()
 
-app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = ''
+app.config['MYSQL_DATABASE_USER'] = 'spasociety_dbuser'
+app.config['MYSQL_DATABASE_PASSWORD'] = '123456'
 app.config['MYSQL_DATABASE_DB'] = 'SPASOCIETY_STORE'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 
@@ -52,4 +52,3 @@ if __name__ == '__main__':
     except ValueError:
         PORT = 5555
     app.run(HOST, PORT)
-    app.run(debug=True);
